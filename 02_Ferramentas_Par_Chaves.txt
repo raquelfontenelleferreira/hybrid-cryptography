@@ -1,0 +1,65 @@
+1) OpenSSL
+O OpenSSL é uma implementação de código aberto dos protocolos SSL e TLS. Essa biblioteca implementa funções básicas de criptografia.
+
+Para gerar o par de chaves, na linha de comando:
+
+i) Usando o comando:
+
+openssl genrsa -des3 -out private.pem 2048
+
+Esse comando vai gerar um par de chaves de 2048bits, criptografá-lo com uma senha que você informa e vai escrevê-lo num arquivo.
+
+Será necessário extrair a chave pública, que pode ser feito com o seguinte comando:
+
+openssl rsa -in private.pem -outform PEM -pubout -out public.pem
+
+Então, é só abrir o arquivo public.pem e, garantindo que começa com ----BEGIN PUBLIC KEY----, eis a chave pública.
+
+Fonte: https://rietta.com/blog/openssl-generating-rsa-key-from-command/ (Tradução livre)
+
+---------
+2) SSH
+O Secure Shell é um protocolo de rede criptográfico para operação de serviço de rede de forma segura sobre uma rede insegura.
+
+Para gerar um par de chaves, na linha de comando:
+
+Em sistemas UNIX (Linux) ou UNIX-Like (macOS):
+
+i) Rodar o comando: -ssh-keygen 
+
+Pode-se usar a flag -t para especificar o tipo de chave para criar.
+Para uma chave RSA, usa-se o comando: ssh-keygen -t rsa
+Além disso, pode-se também usar a flag -b para especificar o tamanho da chave, em bits: ssh-keygen -b 2048 -t rsa
+
+ii) O comando pede para você especificar o caminho no qual salvar a chave; um caminho e nome de arquivos predefinidos são
+sugeridos, como /home/user_name/.ssh/id_rsa. Para aceitar, basta teclar Enter. Caso queira especificar o próprio caminho e
+nome de arquivo, será necessário digitar e, então, teclar Enter.
+
+iii) O comando vai pedir, também, uma senha. A senha não é obrigatória, mas é recomendada para proteger a chave privada de uso indevido.
+
+Fonte: https://docs.oracle.com/en/cloud/cloud-at-customer/occ-get-started/generate-ssh-key-pair.html (Tradução livre)
+
+Em sistemas Windows:
+
+Pode-se usar a ferramenta PuTTY ou, então, seguir os comandos:
+
+i) Criar um diretório ssh caso não exista, usando os comandos:  mkdir /Users/username/.ssh ou  mkdir /home/username/.ssh
+
+ii) Depois, acesse o diretório:  cd /Users/username/.ssh ou cd /home/username/.ssh
+
+iii) Rode o comando ssh-keygen para gerar o par de chaves: ssh-keygen
+Similarmente ao comando para sistemas Unix ou Unix-like, também pode-se usar a flag -t para
+informar o tipo de chave a ser criada: ssh-keygen -t key_type
+
+iv) Recupere a chave pública. Admitindo que foi usado o nome predefinido id_rsa, a chave pública pode ser encontrada em:
+/Users/username/.ssh/id_rsa.pub/home/username/.ssh/id_rsa.pub
+
+Forneça a chave pública para que uma conexão possa ser realizada com o seu servidor.
+
+v) Para transferir arquivos usando a autenticação da chave pública, use o comando ascp com a flag -i private_key_file, desta forma:
+ascp -T -l 10M -m 1M  -i ~/.ssh/id_rsa  myfile.txt  jane@10.0.0.2:/space
+
+Fonte: https://www.ibm.com/docs/en/aci/3.9.2?topic=atfcla-creating-ssh-keys-command-line (Tradução livre)
+
+
+
